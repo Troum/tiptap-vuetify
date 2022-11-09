@@ -71,7 +71,15 @@ import { Component, Prop } from 'vue-property-decorator'
 import { VDialog, VCard, VCardTitle, VCardText, VCardActions, VBtn, VSpacer, VIcon, VTextField } from 'vuetify/lib'
 import I18nMixin from '~/mixins/I18nMixin'
 import { COMMON_ICONS } from '~/configs/theme'
-import { ValidationObserver, ValidationProvider } from 'vee-validate'
+import { extend, setInteractionMode, ValidationObserver, ValidationProvider } from 'vee-validate'
+import { regex } from 'vee-validate/dist/rules'
+
+setInteractionMode('eager')
+
+extend('regex', {
+  ...regex,
+  message: 'Поле должно быть валидной ссылкой'
+})
 
 export const PROPS = {
   VALUE: 'value' as const,
