@@ -26,7 +26,6 @@
         <v-card-text>
           <validation-provider
             v-slot="{ errors }"
-            :custom-messages="{regex: 'Должна быть задана веб-ссылка'}"
             :rules="{regex: /^[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/}"
           >
             <v-text-field

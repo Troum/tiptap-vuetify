@@ -106,7 +106,7 @@ export default {
       window: {
         title: 'Управление ссылкой',
         form: {
-          hrefLabel: 'Href'
+          hrefLabel: 'Ссылка'
         },
         buttons: {
           close: 'Закрыть',
