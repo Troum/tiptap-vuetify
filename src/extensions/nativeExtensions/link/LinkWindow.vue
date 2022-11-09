@@ -3,52 +3,65 @@
     :value="value"
     max-width="500px"
   >
-    <v-card>
-      <v-card-title>
-        <span class="headline">
-          {{ $i18n.getMsg('extensions.Link.window.title') }}
-        </span>
+    <validation-observer
+      ref="linkWindowObserver"
+      v-slot="{ handleSubmit }"
+    >
+      <v-card>
+        <v-card-title>
+          <span class="headline">
+            {{ $i18n.getMsg('extensions.Link.window.title') }}
+          </span>
 
-        <v-spacer />
+          <v-spacer />
 
-        <v-btn
-          icon
-          @click="close"
-        >
-          <v-icon>{{ COMMON_ICONS.close[$tiptapVuetify.iconsGroup] }}</v-icon>
-        </v-btn>
-      </v-card-title>
-      <v-card-text>
-        <v-text-field
-          v-model="form.href"
-          :label="$i18n.getMsg('extensions.Link.window.form.hrefLabel')"
-        />
+          <v-btn
+            icon
+            @click="close"
+          >
+            <v-icon>{{ COMMON_ICONS.close[$tiptapVuetify.iconsGroup] }}</v-icon>
+          </v-btn>
+        </v-card-title>
 
+        <v-card-text>
+          <validation-provider
+            v-slot="{ errors }"
+            :custom-messages="{regex: 'Должна быть задана веб-ссылка'}"
+            :rules="{regex: /^[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/}"
+          >
+            <v-text-field
+              v-model="form.href"
+              :error-messages="errors"
+              :label="$i18n.getMsg('extensions.Link.window.form.hrefLabel')"
+            />
+          </validation-provider>
         <!--
         <v-checkbox
           v-model="form.blank"
           label="Is blank?"
         />
         -->
-      </v-card-text>
-      <v-card-actions>
-        <v-btn
-          text
-          @click="close"
-        >
-          {{ $i18n.getMsg('extensions.Link.window.buttons.close') }}
-        </v-btn>
+        </v-card-text>
 
-        <v-btn
-          :disabled="isDisabled"
-          :color="isRemove ? 'error' : 'primary'"
-          text
-          @click="apply"
-        >
-          {{ $i18n.getMsg('extensions.Link.window.buttons.' + (isRemove ? 'remove' : 'apply')) }}
-        </v-btn>
-      </v-card-actions>
-    </v-card>
+        <v-card-actions>
+          <v-btn
+            text
+            @click="close"
+          >
+            {{ $i18n.getMsg('extensions.Link.window.buttons.close') }}
+          </v-btn>
+
+          <v-btn
+            :disabled="isDisabled"
+            :color="isRemove ? 'error' : 'primary'"
+            text
+            @click="handleSubmit(apply)"
+          >
+            {{ $i18n.getMsg('extensions.Link.window.buttons.' + (isRemove ? 'remove' : 'apply')) }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </validation-observer>
   </v-dialog>
 </template>
 
@@ -58,6 +71,7 @@ import { Component, Prop } from 'vue-property-decorator'
 import { VDialog, VCard, VCardTitle, VCardText, VCardActions, VBtn, VSpacer, VIcon, VTextField } from 'vuetify/lib'
 import I18nMixin from '~/mixins/I18nMixin'
 import { COMMON_ICONS } from '~/configs/theme'
+import { ValidationObserver, ValidationProvider } from 'vee-validate'
 
 export const PROPS = {
   VALUE: 'value' as const,
@@ -68,7 +82,7 @@ export const PROPS = {
 }
 
 @Component({
-  components: { VDialog, VCard, VCardTitle, VCardText, VCardActions, VBtn, VSpacer, VIcon, VTextField }
+  components: { VDialog, VCard, VCardTitle, VCardText, VCardActions, VBtn, VSpacer, VIcon, VTextField, ValidationObserver, ValidationProvider }
 })
 export default class LinkWindow extends mixins(I18nMixin) {
   @Prop({
