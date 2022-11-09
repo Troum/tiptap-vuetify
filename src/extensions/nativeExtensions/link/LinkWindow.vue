@@ -26,7 +26,7 @@
         <v-card-text>
           <validation-provider
             v-slot="{ errors }"
-            :rules="{regex: /^[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/}"
+            :rules="{required: true, regex: /^[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/}"
           >
             <v-text-field
               v-model="form.href"
@@ -71,13 +71,18 @@ import { VDialog, VCard, VCardTitle, VCardText, VCardActions, VBtn, VSpacer, VIc
 import I18nMixin from '~/mixins/I18nMixin'
 import { COMMON_ICONS } from '~/configs/theme'
 import { extend, setInteractionMode, ValidationObserver, ValidationProvider } from 'vee-validate'
-import { regex } from 'vee-validate/dist/rules'
+import { regex, required } from 'vee-validate/dist/rules'
 
 setInteractionMode('eager')
 
 extend('regex', {
   ...regex,
-  message: 'Поле должно быть валидной ссылкой'
+  message: 'Введите корректный адрес веб-ссылки'
+})
+
+extend('required', {
+  ...required,
+  message: 'Поле не должно быть пустым'
 })
 
 export const PROPS = {
