@@ -8,8 +8,7 @@
     "build": "rollup -c --environment BUILD:production",
     "build-watch": "rollup -w -c",
     "lint": "eslint ./src --ext .ts,.js,.vue --ignore-path .gitignore",
-    "lint-fix": "yarn lint --fix",
-    "postinstall": "cd node_modules/tiptap-vuetify && npm install && npm run build"
+    "lint-fix": "yarn lint --fix"
   },
   "resolutions": {
     "prosemirror-model": "1.8.2"
